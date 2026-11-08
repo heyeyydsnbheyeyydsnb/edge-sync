@@ -1,0 +1,17 @@
+name: diag4
+on:
+  push:
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "=== hello (5-line worker)"
+          curl -s -o /tmp/h -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 25 "https://hello.pajd1p4iry.workers.dev/"
+          head -c 200 /tmp/h; echo
+          echo "=== checker root"
+          curl -s -o /tmp/c -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 25 "https://asset-meta.pajd1p4iry.workers.dev/"
+          head -c 200 /tmp/c; echo
+          echo "=== DNS"
+          getent hosts hello.pajd1p4iry.workers.dev || true
+          getent hosts asset-meta.pajd1p4iry.workers.dev || true
