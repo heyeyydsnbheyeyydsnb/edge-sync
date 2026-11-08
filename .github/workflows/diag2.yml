@@ -1,0 +1,22 @@
+name: diag2
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe
+        run: |
+          echo "=== NEW root"
+          curl -s -o /tmp/a -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 30 "https://asset-meta.pajd1p4iry.workers.dev/"
+          head -c 240 /tmp/a; echo
+          echo "=== OLD root"
+          curl -s -o /tmp/b -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 30 "https://asset-meta.heyeyydsnb.workers.dev/"
+          head -c 240 /tmp/b; echo
+          echo "=== NEW check"
+          curl -s -o /tmp/c -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 40 "https://asset-meta.pajd1p4iry.workers.dev/x9k4mvz2q?sstp=vpn:vpn@127.0.0.1:1"
+          head -c 240 /tmp/c; echo
+          echo "=== OLD check"
+          curl -s -o /tmp/d -w "HTTP:%{http_code} size:%{size_download}\n" --max-time 40 "https://asset-meta.heyeyydsnb.workers.dev/x9k4mvz2q?sstp=vpn:vpn@127.0.0.1:1"
+          head -c 240 /tmp/d; echo
